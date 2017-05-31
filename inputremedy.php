@@ -121,7 +121,7 @@ if ($rowremedy['estado'] > 1)
                             echo '<input type="submit" name="load_excel" value="Cargar Excel"/>';
                         }
                         else {
-                            echo '<input type="text" style="background-color:#cccccc;" size="80" name="excelfile" id="excelfile" value="'.$rowremedy['requestid'].'.xlsx" readonly/>';
+                            echo '<input type="text" style="background-color:#cccccc;" size="70" name="excelfile" id="excelfile" value="'.$rowremedy['requestid'].'.xlsx" readonly/>';
                         }
                         if ($rowremedy['estado'] == 1 and !empty($_POST['requestid']))
                         {
