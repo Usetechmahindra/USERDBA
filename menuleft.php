@@ -20,6 +20,11 @@ and open the template in the editor.
     <body>
        <?php
             session_start();
+            // Controlar conexión oracle
+            if(empty($_SESSION['vconnoracle']))
+            {
+                header("Location: login.php");
+            }
         ?>
         <div id="menuacordeon">
             <h4>

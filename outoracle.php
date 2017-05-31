@@ -1,6 +1,6 @@
 <?php
 $ClassOra = new oraClass();
-
+$rlineas=$ClassOra->ddluser($_SESSION['requestid']);
 ?>
 
 <div id="doracle">
@@ -19,7 +19,13 @@ $ClassOra = new oraClass();
         <tbody>
             <tr>
                 <td>
-                <textarea rows="6" cols="80" style="background-color:#cccccc;" name="ddlgrant" id="ddlgrant" readonly><?php print_r($ClassOra->ddluser($_SESSION['requestid']));;?>
+                <textarea rows="6" cols="80" style="background-color:#cccccc;" name="ddlgrant" id="ddlgrant" readonly><?php 
+                // Recorrer las filas de datos
+                while($row = mysqli_fetch_assoc($rlineas))
+                {
+                    echo $row['ddl'];
+                }
+                ?>
                 </textarea> 
                 </td>
             </tr>

@@ -8,7 +8,7 @@ and open the template in the editor.
     <link rel="stylesheet" type="text/css" href="css/onoestilos.css">
     <head>
     <?php
-	// creamos la sesion y clase de admin de conexiones.
+    // creamos la sesion y clase de admin de conexiones.
     session_start();
     require('./libs/ConnectionClass.php');
     require('./libs/remedyClass.php');

@@ -81,7 +81,8 @@ class oraClass {
             // Nueva fila
             $icont ++;
         }
-        return $sddl;
+        // Retornar todas las lineas del ticket
+        return $this->getddl($requestid);
     }
     
     public function ddlgrants($iduser,$nombreuser)
@@ -153,6 +154,16 @@ class oraClass {
             } 
         }
         return 1;
+    }
+    // Funcion que retorna las lineas sql.
+    private function getddl($requestid)
+    {
+        // Con los datos de la tabla usuario genera la DDL CREATE/ALTER user oracle
+        $conn = $this->conectar();
+        $sselect="select * from lineas_sql where idusuario in(select idusuario from usuario where requestid ='".$requestid."')";
+        $result = $conn->query($sselect) or exit("Codigo de error ({$conn->errno}): {$conn->error}");
+        // Retornar el resultado
+        return $result;
     }
     //End off class
 }
