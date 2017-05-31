@@ -92,15 +92,14 @@ class ConnectionClass {
     public function conectarOracle()
     {
         // Realizar conexión con valores de session.
-        if($cora = OCILogon($_SESSION['vuser'], $_SESSION['vpass'], $_SESSION['vconnoracle']))
-        {
-            $_SESSION['cora'] = $cora;
-            return 1;
-        }else{
-            $err = OCIError();
-            $_SESSION['textsesion']= "Conexión fallida a oracle." . $err[text];
-            return -1;
+        $cora = oci_connect($_SESSION['vuser'], $_SESSION['vpass'], $_SESSION['vconnoracle']);
+        if (!$cora) {
+          $e = oci_error();
+          $_SESSION['textsesion']= "Conexión fallida a oracle." . $err[text];
+          return -1;
         }
+        $_SESSION['cora'] = $cora;
+        return 1;
     }
     
     public function registraMsgMantenimiento ($proceso,$msg,$conn) {
