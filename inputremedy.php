@@ -83,13 +83,13 @@ if ($rowremedy['estado'] > 1)
             <tr>
                 <td>
                     <label for="conexion">Cadena conexión</label> 
-                    <input type="text" style="background-color:#cccccc;" size="80" name="conexion" id="conexion" value="<?php echo $rowremedy['conexion'];?>" readonly/>
+                    <input type="text" style="background-color:#cccccc;" size="70" name="conexion" id="conexion" value="<?php echo $rowremedy['conexion'];?>" readonly/>
                 </td>
             </tr>
             <tr>
                 <td>
                     <label for="email">Email peticionario</label> 
-                    <input type="email" size="80" name="peticionario" id="peticionario" value="<?php echo $rowremedy['peticionario'];?>"/>
+                    <input type="email" size="70" name="peticionario" id="peticionario" value="<?php echo $rowremedy['peticionario'];?>"/>
                 </td>
                 <td>
                     <label for="fauto">Fecha autorización</label>
@@ -99,7 +99,7 @@ if ($rowremedy['estado'] > 1)
             <tr>
                 <td>
                 <label for="comentario">Comentario</label>
-                <input type="text" size="80" name="comentario" id="comentario" value="<?php echo $rowremedy['comentario'];?>"/> 
+                <input type="text" size="70" name="comentario" id="comentario" value="<?php echo $rowremedy['comentario'];?>"/> 
                 </td>
                 <td>
                     <label for="estado">Estado</label>
