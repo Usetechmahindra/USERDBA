@@ -121,7 +121,7 @@ class remedyClass {
         {
             //echo "Nuevo bitname creado.";
         } else {
-            echo "Falló la inserción: (" . $mysqli->errno . ") " . $mysqli->error;
+            echo "Falló la inserción: (" . $conn->errno . ") " . $conn->error;
         }
         // Cargar y retornar.
         $sselect="select * from remedy where requestid='".$_SESSION['requestid']."'";
