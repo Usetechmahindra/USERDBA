@@ -19,11 +19,11 @@ and open the template in the editor.
         $_SESSION['vconnoracle']=$_POST['cbdb'];
         $acadena = explode("=",$_SESSION['vconnoracle']);
         $_SESSION['vsid'] = $scadena=substr($acadena[8],0,-3); 
-        // Conectar a oracle
-        if ($ClaseConn->conectarOracle() > 0)
-        {
+        // Conectar a oracle. Pruebas
+        //if ($ClaseConn->conectarOracle() > 0)
+        //{
             header("Location: adminremedy.php");
-        }
+        //}
     }
     ?>
     <head>
