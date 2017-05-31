@@ -19,11 +19,11 @@ $rlineas=$ClassOra->ddluser($_SESSION['requestid']);
         <tbody>
             <tr>
                 <td>
-                <textarea rows="6" cols="80" style="background-color:#cccccc;" name="ddlgrant" id="ddlgrant" readonly><?php 
+                <textarea rows="6" cols="70" style="background-color:#cccccc;" name="ddlgrant" id="ddlgrant" readonly><?php 
                 // Recorrer las filas de datos
                 while($row = mysqli_fetch_assoc($rlineas))
                 {
-                    echo $row['ddl'];
+                    echo $row['ddl'].' | ';
                 }
                 ?>
                 </textarea> 
