@@ -1,35 +1,61 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+div#dgridvf {
+    background-color: white;
+    overflow: hidden;
+    overflow-y: scroll;
+    height: 90%;
+    width: 98%;
+}
+</style>
+<title></title>
 <?php
 $ClassOra = new oraClass();
 $rlineas=$ClassOra->ddluser($_SESSION['requestid']);
 ?>
-
-<div id="doracle">
+</head>
+<body>
     <h3 style="color:#e60202">Previo sentencias Oracle</h3>
-    <form id="foracle" method="post" enctype="multipart/form-data">
-    <table border="0" width="90%" cellspacing="10">
+    <div id="dgridvf">
+        <form id="fgrid" method="post">
+        <table class="tgridvf">
         <thead>
-<!--           <tr>
+           <tr>
+             <th>ESTADO</th>
              <th>DDL</th>
-             <th>Estado</th>
-             <th>festado</th>
-             <th>err_code</th>
-             <th>err_message</th>
-           </tr>-->
+             <th>F.ESTADO</th>
+             <th>ERROR</th>
+           </tr>
        </thead>
         <tbody>
+           <?php while($row = mysqli_fetch_assoc($rlineas) ){
+           ?>
+            <input type="hidden" name="idsql[]" value="<?php echo $row['idsql'];?>">
             <tr>
+                <!--Columnas de la fila tr-->
                 <td>
-                <textarea rows="6" cols="70" style="background-color:#cccccc;" name="ddlgrant" id="ddlgrant" readonly><?php 
-                // Recorrer las filas de datos
-                while($row = mysqli_fetch_assoc($rlineas))
-                {
-                    echo $row['ddl'].' | ';
-                }
-                ?>
-                </textarea> 
+                <select name = "estado[]" disabled>
+                    <option value="0" <?php if($row['estado'] == '0') {echo " SELECTED ";} echo">"; ?>SIN APLICAR</option>
+                    <option value="-1" <?php if($row['estado'] == '-1') {echo " SELECTED ";} echo">"; ?>ERROR</option>
+                    <option value="1" <?php if($row['estado'] == '1') {echo " SELECTED ";} echo">"; ?>PROCESADO</option>
+                </select>
                 </td>
+                <td style="width: 350px;"><?php echo $row['ddl'];?></td>
+                <td><?php echo date("d/m/Y", strtotime($row['festado']));?></td>
+                <td style="width: 300px;"><?php 
+                    if(!empty($row['err_code'])) {
+                        echo '[ '.$row['err_code'].'] '.$row['err_message'];
+                    }
+                    ?>
+                </td> 
             </tr>
+        <!--Fin while PHP-->
+        <?php } ?>
         </tbody>
     </table>
     </form>
 </div>
+</body>
+</html>
