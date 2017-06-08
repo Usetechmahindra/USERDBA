@@ -20,6 +20,39 @@ and open the template in the editor.
     {
         header("Location: adminremedy.php");
     }
+    // Si el estado < 2 mandar a primer formulario
+    if($_SESSION['ESTADOTICKET'] < 2)
+    {
+        header("Location: adminremedy.php");
+    }
+    // Control de post
+    $ClaseRemedy = new remedyClass();
+    $ClassOra = new oraClass();
+    
+    // Controlar clase Oracle. Si actualizar actualiza todo act a 3 el ticket.
+    if(isset($_POST['exec_oracle']))
+    {   
+       $_SESSION['VTEXTPROC'] = "";
+       $rlineas=$ClassOra->execoracle();
+    }else{
+           $rlineas=$ClassOra->ddluser($_SESSION['requestid']); 
+    }
+    
+    
+    if(!empty($_SESSION['requestid']))
+    {
+        $rowremedy=$ClaseRemedy->loadremedy();
+        // Coger la variable de sesion del estado
+        $_SESSION['ESTADOTICKET']=$rowremedy['estado'];
+    }
+
+    // Controlar valor.
+    if (isset($_POST['reload_remedy']))
+    {
+        $ClaseRemedy->resetremedy();
+        header("Location: adminremedy.php");
+    }
+
     // Crear clase de para llamada a funciones genericas
     $ClaseConn = new ConnectionClass();
     $ClaseConn->conectarBDMySQLuserdb();

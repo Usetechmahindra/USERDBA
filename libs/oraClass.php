@@ -11,7 +11,7 @@
  *
  * @author Administrador
  */
-class oraClass {
+class oraClass extends ConnectionClass{
     // Connect
     function conectar()
     {
@@ -134,7 +134,6 @@ class oraClass {
     private function create_sql($iduser,$alineas)
     {
         $conn = $this->conectar();
-        
         $sselect = "select count(1) from lineas_sql where idusuario = ".$iduser;
         $result = $conn->query($sselect) or exit("Codigo de error ({$conn->errno}): {$conn->error}");
         $row = mysqli_fetch_array($result);
@@ -155,6 +154,7 @@ class oraClass {
         }
         return 1;
     }
+    
     // Funcion que retorna las lineas sql.
     private function getddl($requestid)
     {
@@ -164,6 +164,103 @@ class oraClass {
         $result = $conn->query($sselect) or exit("Codigo de error ({$conn->errno}): {$conn->error}");
         // Retornar el resultado
         return $result;
+    }
+    
+    private function updateddl($fila,$conn)
+    {
+        // Preparar sentencia
+        $stmt = $conn->prepare("UPDATE lineas_sql SET idusuario = ?,
+            ddl = ?, 
+            estado = ?,  
+            festado = ?,
+            err_code = ?,
+            err_message = ?
+            WHERE idsql = ?");
+        // Bind variables
+        $stmt->bind_param('isisssi',
+        $fila['idusuario'],
+        $fila['ddl'],
+        $fila['estado'],
+        getdate(),
+        $fila['err_code'],
+        $fila['err_message'],
+        $fila['idsql']);
+        //echo "stmt bind_param correcto.";
+        // Ejecutar
+        if (!$stmt->execute()) {
+            $_SESSION['textsesion']="Falló la ejecución del update: (" . $stmt->errno . ") " . $stmt->error;
+            return -1;
+        }
+        // Finalizar
+        $stmt->close();
+        return 1;
+    }
+
+
+    // La función más importante aplicar los cambios oracle
+    public function execoracle()
+    {
+        // Con los datos de la tabla usuario genera la DDL CREATE/ALTER user oracle
+        $ierr = 0;
+        $conn = $this->conectar();
+        $sselect="select * from lineas_sql where idusuario in(select idusuario from usuario where requestid ='".$_SESSION['requestid']."')";
+        // Maxima seguridad meter en y bucle try catch
+        $result = $conn->query($sselect) or exit("Codigo de error ({$conn->errno}): {$conn->error}");
+        $row = mysqli_fetch_array($result);
+        // Meter en transacción todas las ejecuciones
+        try {
+            // Control conexión Oracle
+            if(!empty($_SESSION['cora']))
+            {
+                if ($this->conectarOracle() < 0)
+                {
+                    return -1;
+                }
+            }
+            // Crear transacción
+            $_SESSION['cora']->beginTransaction();
+            // Recorer todas las dll he intentar ejecutarlas transaccionalmente
+            while($row = mysqli_fetch_assoc($result))
+            {
+                // Aplicar linea 
+                $stid = oci_parse($_SESSION['cora'], $row['ddl']);
+                $r = oci_execute($stid, OCI_NO_AUTO_COMMIT);
+                if (!$r) {
+                    // Aumentar contador de errores
+                    $ierr +=1;
+                    $e = oci_error($stid);
+                    //trigger_error(htmlentities($e['message']), E_USER_ERROR);
+                    // Lanzar update de la fila
+                    $row['estado'] = -1;
+                    $row['err_code'] = E_USER_ERROR;
+                    $row['err_message'] = $e['message'];
+                    
+                }else {
+                    // Lanzar update de la fila
+                    $row['estado'] = 1;
+                }
+                // Llamar a la función de update con bin variables
+                if ($this->updateddl($row,$conn) < 0)
+                {
+                    return -1;
+                }
+            }
+        } catch (Exception $e) {
+            $_SESSION['textsesion']='Excepción capturada: '.$e->getMessage();
+            // Hacer rolback oracle
+            oci_rollback($_SESSION['cora']);
+            return -1;
+        }
+        // Si llega aqui todo OK
+        // Control errores
+        if ($ierr == 0){
+            $_SESSION['textsesion'] = "Actualización Oracle realizada correctamente.";
+        }else{
+            oci_rollback($_SESSION['cora']);
+            return -1;
+        }
+        return 1;
+        
     }
     //End off class
 }

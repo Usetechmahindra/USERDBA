@@ -1,26 +1,3 @@
-<?php
-// Control de post
-$ClaseRemedy = new remedyClass();
-// Procesar oracle
-if(!empty($_SESSION['requestid']))
-{
-    $rowremedy=$ClaseRemedy->loadremedy();
-}
-// Controlar que quiere cargar un excel reseteando el estado
-
-// Si el estado < 2 mandar a primer formulario
-if($rowremedy['estado'] < 2)
-{
-    header("Location: adminremedy.php");
-}
-
-// Controlar valor.
-if (isset($_POST['reload_remedy']))
-{
-    $ClaseRemedy->resetremedy();
-    header("Location: adminremedy.php");
-}
-?>
 <script src="java/jquery.js"></script>
 <script src="java/jquery-ui.js"></script>
 <script src="java/jquery.multi-select.js"></script>
@@ -108,7 +85,7 @@ if (isset($_POST['reload_remedy']))
                         <option value="0" <?php if($rowremedy['estado'] == 0) {echo " SELECTED ";} echo">"; ?>Creado</option>
                         <option value="1" <?php if($rowremedy['estado'] == 1) {echo " SELECTED ";} echo">"; ?>Excel cargado</option>
                         <option value="2" <?php if($rowremedy['estado'] == 2) {echo " SELECTED ";} echo">"; ?>Excel procesado</option>
-                        <option value="3" <?php if($rowremedy['estado'] == 3) {echo " SELECTED ";} echo">"; ?>Usuario aplicado</option>
+                        <option value="3" <?php if($rowremedy['estado'] == 3) {echo " SELECTED ";} echo">"; ?>Ticket OK</option>
                     </select>
                 </td>
             </tr>

@@ -11,10 +11,6 @@ div#dgridvf {
 }
 </style>
 <title></title>
-<?php
-$ClassOra = new oraClass();
-$rlineas=$ClassOra->ddluser($_SESSION['requestid']);
-?>
 </head>
 <body>
     <h3 style="color:#e60202">Previo sentencias Oracle</h3>
@@ -55,7 +51,14 @@ $rlineas=$ClassOra->ddluser($_SESSION['requestid']);
         <?php } ?>
         </tbody>
     </table>
-    </form>
 </div>
+<?php
+    // Pintar si hay filas y el estado del ticket es válido
+    if ($_SESSION['ESTADOTICKET']< 3){
+        echo '<input type="submit" name="exec_oracle" value="Aplicar Oracle"/>';
+        echo '<p style="color:#e60202">'.$_SESSION['textsesion'].'</p>';       
+    }
+?>
+</form>
 </body>
 </html>
