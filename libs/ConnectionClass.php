@@ -92,7 +92,8 @@ class ConnectionClass {
     public function conectarOracle()
     {
         // Realizar conexión con valores de session.
-        $cora = oci_connect($_SESSION['vuser'], $_SESSION['vpass'], $_SESSION['vconnoracle']);
+        //$cora = oci_connect($_SESSION['vuser'], $_SESSION['vpass'], $_SESSION['vconnoracle']);
+        $cora = oci_pconnect($_SESSION['vuser'], $_SESSION['vpass'], $_SESSION['vconnoracle']);
         if (!$cora) {
           $e = oci_error();
           $_SESSION['textsesion']= "Conexión fallida a oracle." . $err[text];

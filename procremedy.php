@@ -16,6 +16,8 @@ and open the template in the editor.
     /** Administración excel PHPExcel */
     require('./libs/PHPExcel.php');
     // Crear clases
+    // Crear clase de para llamada a funciones genericas
+    $ClaseConn = new ConnectionClass();
     $ClaseRemedy = new remedyClass();
     $ClassOra = new oraClass();
     // Control de variable de session
@@ -54,8 +56,6 @@ and open the template in the editor.
     // Cargar lineas
     $rlineas=$ClassOra->ddluser($_SESSION['requestid']); 
 
-    // Crear clase de para llamada a funciones genericas
-    $ClaseConn = new ConnectionClass();
     $ClaseConn->conectarBDMySQLuserdb();
     ?>
         <meta charset="UTF-8">

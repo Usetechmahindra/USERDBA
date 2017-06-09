@@ -38,11 +38,6 @@ and open the template in the editor.
                 include 'inputremedy.php';
             ?>
             </div>
-            <div id="output">
-            <?php
-
-            ?>
-        </div>
         </div> <!-- Fin del cuperpo -->
         <div id="pie">
         </div>
