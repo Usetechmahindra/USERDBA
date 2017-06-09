@@ -57,10 +57,31 @@ class remedyClass {
         }
     }
     // Actualizar Usuarios
-    public function updateremedy()
+    public function updateremedy($pfila = NULL)
     {
         // Control post
         $conn = $this->conectar();
+        // Controlar por fila
+        $aupdate = array();
+        if (!empty($pfila)) {
+            $aupdate['peticionario']=$pfila['peticionario'];
+            $aupdate['fauto']=$pfila['fauto'];
+            $aupdate['estado']=$pfila['estado'];
+            $aupdate['dbname']=$pfila['dbname'];
+            $aupdate['userdba']=$pfila['userdba'];
+            $aupdate['conexion']=$pfila['conexion'];
+            $aupdate['comentario']=$pfila['comentario'];
+            $aupdate['requestid']=$pfila['requestid'];
+        }else{
+            $aupdate['peticionario']=$_POST['peticionario'];
+            $aupdate['fauto']=$_POST['fauto'];
+            $aupdate['estado']=$_POST['estado'];
+            $aupdate['dbname']=$_POST['dbname'];
+            $aupdate['userdba']=$_POST['userdba'];
+            $aupdate['conexion']=$_POST['conexion'];
+            $aupdate['comentario']=$_POST['comentario'];
+            $aupdate['requestid']=$_POST['requestid'];
+        }
         
         // Preparar sentencia
         $stmt = $conn->prepare("UPDATE remedy SET peticionario = ?,
@@ -73,14 +94,14 @@ class remedyClass {
             WHERE requestid = ?");
         // Bind variables
         $stmt->bind_param('ssisssss',
-        $_POST['peticionario'],
-        $_POST['fauto'],
-        $_POST['estado'],
-        $_POST['dbname'],
-        $_POST['userdba'],
-        $_POST['conexion'],
-        $_POST['comentario'],
-        $_POST['requestid']);
+        $aupdate['peticionario'],
+        $aupdate['fauto'],
+        $aupdate['estado'],
+        $aupdate['dbname'],
+        $aupdate['userdba'],
+        $aupdate['conexion'],
+        $aupdate['comentario'],
+        $aupdate['requestid']);
         //echo "stmt bind_param correcto.";
         // Ejecutar
         if (!$stmt->execute()) {

@@ -15,43 +15,44 @@ and open the template in the editor.
     require('./libs/oraClass.php');
     /** Administración excel PHPExcel */
     require('./libs/PHPExcel.php');
+    // Crear clases
+    $ClaseRemedy = new remedyClass();
+    $ClassOra = new oraClass();
     // Control de variable de session
     if(!isset($_SESSION['requestid']))
     {
         header("Location: adminremedy.php");
     }
+    // Cargar datos remedy
+    $rowremedy=$ClaseRemedy->loadremedy();
+    // Coger la variable de sesion del estado
+    $_SESSION['ESTADOTICKET']=$rowremedy['estado'];
     // Si el estado < 2 mandar a primer formulario
     if($_SESSION['ESTADOTICKET'] < 2)
     {
         header("Location: adminremedy.php");
     }
-    // Control de post
-    $ClaseRemedy = new remedyClass();
-    $ClassOra = new oraClass();
-    
-    // Controlar clase Oracle. Si actualizar actualiza todo act a 3 el ticket.
-    if(isset($_POST['exec_oracle']))
-    {   
-       $_SESSION['VTEXTPROC'] = "";
-       $rlineas=$ClassOra->execoracle();
-    }else{
-           $rlineas=$ClassOra->ddluser($_SESSION['requestid']); 
-    }
-    
-    
-    if(!empty($_SESSION['requestid']))
-    {
-        $rowremedy=$ClaseRemedy->loadremedy();
-        // Coger la variable de sesion del estado
-        $_SESSION['ESTADOTICKET']=$rowremedy['estado'];
-    }
-
     // Controlar valor.
     if (isset($_POST['reload_remedy']))
     {
         $ClaseRemedy->resetremedy();
         header("Location: adminremedy.php");
     }
+    // Control de post
+    
+    // Controlar clase Oracle. Si actualizar actualiza todo act a 3 el ticket.
+    if(isset($_POST['exec_oracle']))
+    {   
+       $_SESSION['VTEXTPROC'] = "";
+       // Si acaba bien actualizar estado ticket.
+       if ($ClassOra->execoracle()> 0)
+       {
+           $rowremedy['estado'] = 3;
+           $ClaseRemedy->updateremedy($rowremedy);
+       }
+    }
+    // Cargar lineas
+    $rlineas=$ClassOra->ddluser($_SESSION['requestid']); 
 
     // Crear clase de para llamada a funciones genericas
     $ClaseConn = new ConnectionClass();
