@@ -169,35 +169,27 @@ class oraClass extends ConnectionClass{
     private function updateddl($fila,$conn)
     {
         // Preparar sentencia
-//        $stmt = $conn->prepare("UPDATE lineas_sql SET idusuario = ?,
-//            ddl = ?, 
-//            estado = ?,  
-//            festado = ?,
-//            err_code = ?,
-//            err_message = ?
-//            WHERE idsql = ?");
-//        // Bind variables
-//        $stmt->bind_param('isiissi',
-//        $fila['idusuario'],
-//        $fila['ddl'],
-//        $fila['estado'],
-//        getdate(),
-//        $fila['err_code'],
-//        $fila['err_message'],
-//        $fila['idsql']);
-//        //echo "stmt bind_param correcto.";
-//        // Ejecutar
-//        if (!$stmt->execute()) {
-//            $_SESSION['textsesion']="Falló la ejecución del update: (" . $stmt->errno . ") " . $stmt->error;
-//            return -1;
-//        }
-//      // Lanzar update de los campos, temporal
-        $supdate = "UPDATE lineas_sql SET estado=".$fila['estado'].",festado='".now()."',err_code=".$fila['err_code'].",err_message='".$fila['err_message']."' ";
-        $supdate.= "WHERE idsql=".$fila['idsql'];        
-        if ($conn->query($supdate) === TRUE)
-        {
-        } else {
-            $_SESSION['textsesion']="Falló la inserción: (" . $conn->errno . ") " . $conn->error;
+        $nowtstamp = date('Y-m-d G:i:s');
+        $stmt = $conn->prepare("UPDATE lineas_sql SET idusuario = ?,
+            ddl = ?, 
+            estado = ?,
+            festado = ?,
+            err_code = ?,
+            err_message = ?
+            WHERE idsql = ?");
+        // Bind variables
+        $stmt->bind_param('isisssi',
+        $fila['idusuario'],
+        $fila['ddl'],
+        $fila['estado'],
+        $nowtstamp,
+        $fila['err_code'],
+        $fila['err_message'],
+        $fila['idsql']);
+        //echo "stmt bind_param correcto.";
+        // Ejecutar
+        if (!$stmt->execute()) {
+            $_SESSION['textsesion']="Falló la ejecución del update: (" . $stmt->errno . ") " . $stmt->error;
             return -1;
         }
         return 1;
@@ -208,6 +200,7 @@ class oraClass extends ConnectionClass{
     public function execoracle()
     {
         // Con los datos de la tabla usuario genera la DDL CREATE/ALTER user oracle
+        $_SESSION['textsesion'] = "Actualización realizada correctamente.";
         $ierr = 0;
         $conn = $this->conectar();
         $sselect="select * from lineas_sql where idusuario in(select idusuario from usuario where requestid ='".$_SESSION['requestid']."')";
