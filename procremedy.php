@@ -27,8 +27,7 @@ and open the template in the editor.
     }
     // Cargar datos remedy
     $rowremedy=$ClaseRemedy->loadremedy();
-    // Coger la variable de sesion del estado
-    $_SESSION['ESTADOTICKET']=$rowremedy['estado'];
+    $_SESSION['ESTADOTICKET'] = $rowremedy['estado'];
     // Si el estado < 2 mandar a primer formulario
     if($_SESSION['ESTADOTICKET'] < 2)
     {
@@ -50,6 +49,7 @@ and open the template in the editor.
        if ($ClassOra->execoracle()> 0)
        {
            $rowremedy['estado'] = 3;
+           $_SESSION['ESTADOTICKET'] = $rowremedy['estado'];
            $ClaseRemedy->updateremedy($rowremedy);
        }
     }

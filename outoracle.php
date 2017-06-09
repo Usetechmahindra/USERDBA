@@ -55,9 +55,9 @@ div#dgridvf {
 <?php
     // Pintar si hay filas y el estado del ticket es válido
     if ($_SESSION['ESTADOTICKET']< 3){
-        echo '<input type="submit" name="exec_oracle" value="Aplicar Oracle"/>';
-        echo '<p style="color:#e60202">'.$_SESSION['textsesion'].'</p>';       
+        echo '<input type="submit" name="exec_oracle" value="Aplicar Oracle"/>';     
     }
+    echo '<p style="color:#e60202">'.$_SESSION['textsesion'].'</p>'; 
 ?>
 </form>
 </body>
