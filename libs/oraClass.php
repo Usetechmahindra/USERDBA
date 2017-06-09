@@ -216,12 +216,9 @@ class oraClass extends ConnectionClass{
         // Meter en transacción todas las ejecuciones
         try {
             // Control conexión Oracle
-            if(!empty($_SESSION['cora']))
+            if ($this->conectarOracle() < 0)
             {
-                if ($this->conectarOracle() < 0)
-                {
-                    return -1;
-                }
+                return -1;
             }
             // Recorer todas las dll he intentar ejecutarlas transaccionalmente
             while($row = mysqli_fetch_assoc($result))
@@ -242,6 +239,8 @@ class oraClass extends ConnectionClass{
                 }else {
                     // Lanzar update de la fila
                     $row['estado'] = 1;
+                    $row['err_code'] = 0;
+                    $row['err_message'] = "Sin errores";
                 }
                 // Llamar a la función de update con bin variables
                 if ($this->updateddl($row,$conn) < 0)

@@ -38,11 +38,11 @@ div#dgridvf {
                     <option value="1" <?php if($row['estado'] == '1') {echo " SELECTED ";} echo">"; ?>PROCESADO</option>
                 </select>
                 </td>
-                <td style="width: 350px;"><?php echo $row['ddl'];?></td>
+                <td><?php echo $row['ddl'];?></td>
                 <td><?php echo date("d/m/Y", strtotime($row['festado']));?></td>
                 <td style="width: 300px;"><?php 
                     if(!empty($row['err_code'])) {
-                        echo '[ '.$row['err_code'].'] '.$row['err_message'];
+                        echo $row['err_message'];
                     }
                     ?>
                 </td> 

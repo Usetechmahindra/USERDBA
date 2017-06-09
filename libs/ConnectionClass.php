@@ -99,6 +99,7 @@ class ConnectionClass {
           $_SESSION['textsesion']= "Conexión fallida a oracle." . $err[text];
           return -1;
         }
+        $_SESSION['textsesion']= "";
         $_SESSION['cora'] = $cora;
         return 1;
     }
