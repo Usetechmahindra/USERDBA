@@ -169,30 +169,37 @@ class oraClass extends ConnectionClass{
     private function updateddl($fila,$conn)
     {
         // Preparar sentencia
-        $stmt = $conn->prepare("UPDATE lineas_sql SET idusuario = ?,
-            ddl = ?, 
-            estado = ?,  
-            festado = ?,
-            err_code = ?,
-            err_message = ?
-            WHERE idsql = ?");
-        // Bind variables
-        $stmt->bind_param('isisssi',
-        $fila['idusuario'],
-        $fila['ddl'],
-        $fila['estado'],
-        getdate(),
-        $fila['err_code'],
-        $fila['err_message'],
-        $fila['idsql']);
-        //echo "stmt bind_param correcto.";
-        // Ejecutar
-        if (!$stmt->execute()) {
-            $_SESSION['textsesion']="Falló la ejecución del update: (" . $stmt->errno . ") " . $stmt->error;
+//        $stmt = $conn->prepare("UPDATE lineas_sql SET idusuario = ?,
+//            ddl = ?, 
+//            estado = ?,  
+//            festado = ?,
+//            err_code = ?,
+//            err_message = ?
+//            WHERE idsql = ?");
+//        // Bind variables
+//        $stmt->bind_param('isiissi',
+//        $fila['idusuario'],
+//        $fila['ddl'],
+//        $fila['estado'],
+//        getdate(),
+//        $fila['err_code'],
+//        $fila['err_message'],
+//        $fila['idsql']);
+//        //echo "stmt bind_param correcto.";
+//        // Ejecutar
+//        if (!$stmt->execute()) {
+//            $_SESSION['textsesion']="Falló la ejecución del update: (" . $stmt->errno . ") " . $stmt->error;
+//            return -1;
+//        }
+//      // Lanzar update de los campos, temporal
+        $supdate = "UPDATE lineas_sql SET estado=".$fila['estado'].",festado='".now()."',err_code=".$fila['err_code'].",err_message='".$fila['err_message']."' ";
+        $supdate.= "WHERE idsql=".$fila['idsql'];        
+        if ($conn->query($supdate) === TRUE)
+        {
+        } else {
+            $_SESSION['textsesion']="Falló la inserción: (" . $conn->errno . ") " . $conn->error;
             return -1;
         }
-        // Finalizar
-        $stmt->close();
         return 1;
     }
 
@@ -206,7 +213,6 @@ class oraClass extends ConnectionClass{
         $sselect="select * from lineas_sql where idusuario in(select idusuario from usuario where requestid ='".$_SESSION['requestid']."')";
         // Maxima seguridad meter en y bucle try catch
         $result = $conn->query($sselect) or exit("Codigo de error ({$conn->errno}): {$conn->error}");
-        $row = mysqli_fetch_array($result);
         // Meter en transacción todas las ejecuciones
         try {
             // Control conexión Oracle
@@ -217,8 +223,6 @@ class oraClass extends ConnectionClass{
                     return -1;
                 }
             }
-            // Crear transacción
-            $_SESSION['cora']->beginTransaction();
             // Recorer todas las dll he intentar ejecutarlas transaccionalmente
             while($row = mysqli_fetch_assoc($result))
             {
@@ -232,7 +236,7 @@ class oraClass extends ConnectionClass{
                     //trigger_error(htmlentities($e['message']), E_USER_ERROR);
                     // Lanzar update de la fila
                     $row['estado'] = -1;
-                    $row['err_code'] = E_USER_ERROR;
+                    $row['err_code'] = $e['code'];
                     $row['err_message'] = $e['message'];
                     
                 }else {
