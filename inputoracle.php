@@ -54,14 +54,14 @@
                 <td>
                     <p>DB Oracle</p>
                     <input type="text" style="background-color:#cccccc;" name="dbname" id="dbname" value="<?php echo $rowremedy['dbname'];?>" readonly/>
-                    <p>Usuario DBA</p>
-                    <input type="text" style="background-color:#cccccc;" name="userdba" id="userdba" value="<?php echo $rowremedy['userdba'];?>" readonly/>
                 </td>
             </tr>
             <tr>
                 <td>
                     <label for="conexion">Cadena conexión</label> 
                     <input type="text" style="background-color:#cccccc;" size="70" name="conexion" id="conexion" value="<?php echo $rowremedy['conexion'];?>" readonly/>
+                    <p>Usuario DBA</p>
+                    <input type="text" style="background-color:#cccccc;" name="userdba" id="userdba" value="<?php echo $rowremedy['userdba'];?>" readonly/>
                 </td>
             </tr>
             <tr>
