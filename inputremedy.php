@@ -24,7 +24,12 @@ if ($rowremedy['estado'] > 1)
 {
     header("Location: procremedy.php");
 }
-
+// Pintar simepre las variables de conexión de sessión
+//$_SESSION['vsid']."','".$_SESSION['vuser']."','".$_SESSION['vconnoracle']
+$rowremedy['dbname'] = $_SESSION['vsid'];
+$rowremedy['vuser'] = $_SESSION['vuser'];
+$rowremedy['vconnoracle'] = $_SESSION['vconnoracle'];
+$rowremedy['dbpass'] = $_SESSION['dbpass'];
 ?>
 <script src="java/jquery.js"></script>
 <script src="java/jquery-ui.js"></script>

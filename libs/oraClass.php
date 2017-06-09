@@ -168,7 +168,7 @@ class oraClass extends ConnectionClass{
     
     private function updateddl($fila,$conn)
     {
-        // Preparar sentencia
+        // Preparar sentencia. Formato timestamp
         $nowtstamp = date('Y-m-d G:i:s');
         $stmt = $conn->prepare("UPDATE lineas_sql SET idusuario = ?,
             ddl = ?, 
