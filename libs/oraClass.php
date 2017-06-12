@@ -267,6 +267,7 @@ class oraClass extends ConnectionClass{
     private function rollbackddl()
     {
         // Las ddl no son transaccionales. Por lo tanto se hay creación de usuarios se tienen que borrar posteriormente.
+        // Sólo borrar el usuario si se ha creado desde el programa estado = 1.
         // Los alter no es necesario revertir dado que seguro q se vuelven a aplicar.
         $_SESSION['textsesion'] = "Actualización realizada correctamente.";
         $ierr = 0;
@@ -277,8 +278,11 @@ class oraClass extends ConnectionClass{
                     r.conexion,
                     u.idusuario,
                     u.usuario
-                    FROM remedy r,usuario u
+                    FROM remedy r,usuario u, lineas_sql l
                     where r.requestid = u.requestid
+                    and r.requestid = l.requestid
+                    and l.estado = 1
+                    and l.ddl like '%CREATE USER%'
                     and r.requestid='".$_SESSION['requestid']."'
                     and u.tipoop = 1;";
                // Maxima seguridad meter en y bucle try catch
