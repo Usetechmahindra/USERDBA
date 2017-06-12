@@ -279,7 +279,7 @@ class oraClass extends ConnectionClass{
                     u.usuario
                     FROM remedy r,usuario u, lineas_sql l
                     where r.requestid = u.requestid
-                    and r.requestid = l.requestid
+                    and u.idusuario = l.idusuario
                     and l.estado = 1
                     and l.ddl like '%CREATE USER%'
                     and r.requestid='".$_SESSION['requestid']."'
