@@ -55,7 +55,7 @@ class ConnectionClass {
     { // La funcion carga los datos de las B.D. Oracle en inventario. Pinta un combo donde se realiza la llamada
         // Entorno de test
         echo $vcombo="<option value=0> Seleccione una instanacia </option>";
-        $dbName = 'Entorno Test';
+        $dbName = 'Entorno Test ono10g';
         $cadena = "(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=172.17.5.24)(PORT=1523))(CONNECT_DATA=(SERVER=dedicated)(SID=ono10g)))";
         $vcombo="<option value=".$cadena.">".$dbName."</option>";
         echo $vcombo;
