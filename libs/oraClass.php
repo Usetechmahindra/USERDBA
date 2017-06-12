@@ -199,10 +199,13 @@ class oraClass extends ConnectionClass{
     // La función más importante aplicar los cambios oracle
     public function execoracle()
     {
+        // LAS DDL tiene implicito el COMMIT. Sólo procesar las no procesadas.
+        // /////////////////////////////////////////////////////////////////// //
         // Con los datos de la tabla usuario genera la DDL CREATE/ALTER user oracle
         $_SESSION['textsesion'] = "Actualización realizada correctamente.";
         $ierr = 0;
         $conn = $this->conectar();
+        // Si hay problemas el usuario se borra. Volver a procesar todas las lineas.
         $sselect="select * from lineas_sql where idusuario in(select idusuario from usuario where requestid ='".$_SESSION['requestid']."')";
         // Maxima seguridad meter en y bucle try catch
         $result = $conn->query($sselect) or exit("Codigo de error ({$conn->errno}): {$conn->error}");
@@ -253,10 +256,76 @@ class oraClass extends ConnectionClass{
             $_SESSION['textsesion'] = "Actualización Oracle realizada correctamente.";
         }else{
             oci_rollback($_SESSION['cora']);
+            // Al ser ddl no es transaccional. Borrar los usuarios creados en oracle
+            $this->rollbackddl();
             return -1;
         }
         return 1;
         
+    }
+    
+    private function rollbackddl()
+    {
+        // Las ddl no son transaccionales. Por lo tanto se hay creación de usuarios se tienen que borrar posteriormente.
+        // Los alter no es necesario revertir dado que seguro q se vuelven a aplicar.
+        $_SESSION['textsesion'] = "Actualización realizada correctamente.";
+        $ierr = 0;
+        $conn = $this->conectar();
+        $sselect = "SELECT r.requestid,
+                    r.dbname,
+                    r.userdba,
+                    r.conexion,
+                    u.idusuario,
+                    u.usuario
+                    FROM remedy r,usuario u
+                    where r.requestid = u.requestid
+                    and r.requestid='".$_SESSION['requestid']."'
+                    and u.tipoop = 1;";
+               // Maxima seguridad meter en y bucle try catch
+        $result = $conn->query($sselect) or exit("Codigo de error ({$conn->errno}): {$conn->error}");
+        // Meter en transacción todas las ejecuciones
+        try {
+            // Control conexión Oracle
+            if ($this->conectarOracle() < 0)
+            {
+                return -1;
+            }
+            // Recorer todas las dll he intentar ejecutarlas transaccionalmente
+            while($row = mysqli_fetch_assoc($result))
+            {
+                // Aplicar linea 
+                $sdrop ="DROP USER ".$row['USUARIO'];
+                echo $sdrop;
+                $stid = oci_parse($_SESSION['cora'], $sdrop);
+                $r = oci_execute($stid, OCI_NO_AUTO_COMMIT);
+                if (!$r) {
+                    // Aumentar contador de errores
+                    $ierr +=1;
+                    $e = oci_error($stid);
+                    //trigger_error(htmlentities($e['message']), E_USER_ERROR);
+                    // Lanzar update de la fila
+                    $row['estado'] = -1;
+                    $row['err_code'] = $e['code'];
+                    $row['err_message'] = $e['message'];
+                    $_SESSION['textsesion'] = $e['message'];
+                    return -1;
+                }
+            }
+        } catch (Exception $e) {
+            $_SESSION['textsesion']='Excepción capturada: '.$e->getMessage();
+            // Hacer rolback oracle
+            oci_rollback($_SESSION['cora']);
+            return -1;
+        }
+        // Si llega aqui todo OK
+        // Control errores
+        if ($ierr == 0){
+            $_SESSION['textsesion'] = "Actualización Oracle realizada correctamente.";
+        }else{
+            oci_rollback($_SESSION['cora']);
+            return -1;
+        }
+        return 1;
     }
     //End off class
 }
