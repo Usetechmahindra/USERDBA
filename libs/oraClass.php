@@ -294,7 +294,7 @@ class oraClass extends ConnectionClass{
             while($row = mysqli_fetch_assoc($result))
             {
                 // Aplicar linea 
-                $sdrop ="DROP USER ".$row['USUARIO'];
+                $sdrop ="DROP USER ".$row['usuario'];
                 echo $sdrop;
                 $stid = oci_parse($_SESSION['cora'], $sdrop);
                 $r = oci_execute($stid, OCI_NO_AUTO_COMMIT);
