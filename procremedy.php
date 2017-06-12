@@ -22,7 +22,7 @@ and open the template in the editor.
     $ClassOra = new oraClass();
     
     // Texto antes de procesar clases
-    $_SESSION['VTEXTPROC'] = "";
+    $_SESSION['textsesion'] = "";
     // Control de variable de session
     if(!isset($_SESSION['requestid']))
     {
