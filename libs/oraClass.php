@@ -202,7 +202,6 @@ class oraClass extends ConnectionClass{
         // LAS DDL tiene implicito el COMMIT. Sólo procesar las no procesadas.
         // /////////////////////////////////////////////////////////////////// //
         // Con los datos de la tabla usuario genera la DDL CREATE/ALTER user oracle
-        $_SESSION['textsesion'] = "Actualización realizada correctamente.";
         $ierr = 0;
         $conn = $this->conectar();
         // Si hay problemas el usuario se borra. Volver a procesar todas las lineas.
@@ -324,7 +323,7 @@ class oraClass extends ConnectionClass{
         // Si llega aqui todo OK
         // Control errores
         if ($ierr == 0){
-            $_SESSION['textsesion'] = "Actualización Oracle realizada correctamente.";
+            $_SESSION['textsesion'] = "Estado B.D. Oracle.Revertidos los cambios de creación de usuario.";
         }else{
             oci_rollback($_SESSION['cora']);
             return -1;
