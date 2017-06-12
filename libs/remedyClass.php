@@ -158,7 +158,12 @@ class remedyClass {
         $conn = $this->conectar();
         $ssql = array();
         $ssql[0]= "delete from usuario where requestid ='".$_SESSION['requestid']."'";
-        $ssql[1]= "update remedy set estado=0 where requestid ='".$_SESSION['requestid']."'";
+        // Repintar las variables de conexión
+        $ssql[1]= "update remedy set estado=0, "
+                . "dbname = '".$_SESSION['vsid']."',"
+                . "userdba = '".$_SESSION['vuser']."',"
+                . "conexion = '".$_SESSION['vconnoracle']."'"
+                . "where requestid ='".$_SESSION['requestid']."'";
         // Recorrer el array de insert
         foreach ($ssql as $vsql) {
             if ($conn->query($vsql) === TRUE)
