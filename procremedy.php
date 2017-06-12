@@ -20,6 +20,9 @@ and open the template in the editor.
     $ClaseConn = new ConnectionClass();
     $ClaseRemedy = new remedyClass();
     $ClassOra = new oraClass();
+    
+    // Texto antes de procesar clases
+    $_SESSION['VTEXTPROC'] = "";
     // Control de variable de session
     if(!isset($_SESSION['requestid']))
     {
@@ -44,7 +47,6 @@ and open the template in the editor.
     // Controlar clase Oracle. Si actualizar actualiza todo act a 3 el ticket.
     if(isset($_POST['exec_oracle']))
     {   
-       $_SESSION['VTEXTPROC'] = "";
        // Si acaba bien actualizar estado ticket.
        if ($ClassOra->execoracle()> 0)
        {
