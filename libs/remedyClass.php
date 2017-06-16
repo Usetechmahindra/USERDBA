@@ -44,8 +44,8 @@ class remedyClass {
             return 0;
         }
         // Controlar parte numerica
-        if (!is_numeric(substr($_SESSION['requestid'],-13))) {
-            echo "Caracteres no numéricos en la parte numérica del ticket:".substr($_SESSION['requestid'],-13);
+        if (!is_numeric(substr($_SESSION['requestid'],-12))) {
+            echo "Caracteres no numéricos en la parte numérica del ticket:".substr($_SESSION['requestid'],-12);
             return 0;
         }
         $conn = $this->conectar();
