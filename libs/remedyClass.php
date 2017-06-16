@@ -43,6 +43,11 @@ class remedyClass {
             echo "Los ticket remedy comienzan por INC.";
             return 0;
         }
+        // Controlar parte numerica
+        if (!is_numeric(substr($_SESSION['requestid'],-13))) {
+            echo "Caracteres no numéricos en la parte numérica del ticket:".substr($_SESSION['requestid'],-13);
+            return 0;
+        }
         $conn = $this->conectar();
         $sselect="select * from remedy where requestid='".$_SESSION['requestid']."'";
         $result = $conn->query($sselect) or exit("Codigo de error ({$conn->errno}): {$conn->error}");
