@@ -39,7 +39,10 @@ and open the template in the editor.
     // Actualizar comentario, fecha y email
     if (isset($_POST['update_remedy']))
     {
-        $rowremedy=$ClaseRemedy->updateremedy();
+        $rowremedy['fauto']=$_POST['fauto'];
+        $rowremedy['peticionario']=$_POST['peticionario'];
+        $rowremedy['comentario']=$_POST['comentario'];
+        $ClaseRemedy->updateremedy($rowremedy);
     }
     // Controlar valor.
     if (isset($_POST['reload_remedy']))
