@@ -45,6 +45,7 @@
                     if($rowremedy['estado'] == 2)
                     {
                         echo '<input type="submit" name="reload_remedy" value="Recargar Excel"/>';
+                        echo '<input type="submit" name="update_remedy" value="Act. Remedy"/>';
                     }
                 ?>
                 </td>

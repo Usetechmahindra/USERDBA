@@ -36,6 +36,11 @@ and open the template in the editor.
     {
         header("Location: adminremedy.php");
     }
+    // Actualizar comentario, fecha y email
+    if (isset($_POST['update_remedy']))
+    {
+        $rowremedy=$ClaseRemedy->updateremedy();
+    }
     // Controlar valor.
     if (isset($_POST['reload_remedy']))
     {
