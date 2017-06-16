@@ -260,13 +260,15 @@ class remedyClass {
                 $objWorksheet =  $objPHPExcel->setActiveSheetIndex(0); 
             }
             catch (Exception $e) {
-                echo 'El fichero no contiene la solapa: '.$sheetcarga;
+                echo 'El fichero no contiene la solapa: '.$sheetcarga.".Seleccione un fichero correcto.";
+                $this->resetremedy();
                 return $this->loadremedy();
             }
             // Controlar el nombre de la solapa 0
             if ($objWorksheet->getTitle()<> $sheetcarga)
             {
-                echo "La primera solapa no tiene el nombre correcto:".$objWorksheet->getTitle()." no es igual a ".$sheetcarga;
+                echo "La primera solapa no tiene el nombre correcto:".$objWorksheet->getTitle()." no es igual a ".$sheetcarga.".Seleccione un fichero correcto.";
+                $this->resetremedy();
                 return $this->loadremedy();
             }
             // Cargado $objPHPExcel y con solapa correcta.
