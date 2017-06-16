@@ -286,7 +286,9 @@ class remedyClass {
             }
 
         } catch(PHPExcel_Reader_Exception $e) {
-            die('Error al cargar fichero: '.$e->getMessage());
+            echo 'Error al cargar fichero: '.$e->getMessage();
+            $this->resetremedy();
+            return $this->loadremedy();
         }
         // Después del proceso retornar la fila remedy.
         // Si llega hasta aqui. Actualizar remedy
