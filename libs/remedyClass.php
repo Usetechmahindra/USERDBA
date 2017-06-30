@@ -461,5 +461,37 @@ class remedyClass {
        return 1;
 
     }
+    
+    public function mailfinal($rowremedy)
+    {
+        $toemail=$rowremedy['peticionario'];
+        $subject="Ejecución correcta según ticket Nº".$rowremedy['requestid'];
+        // Enviar correo
+        $messagehtml = '
+        <html>
+        <head>
+        <title>'.$subject.'</title>
+        </head>
+        <body>
+        <img src="http://www.vodafone.es/static/img/vf-logo.png" alt="Logo VF" style="background-color:#e60000;">
+        <hr style="color: #e60000;" />';
+        // Cabecera del mensaje
+        $messagehtml .='<p/>'.$subject.'<p/>';
+        // Recorrer todas las lineas de detalle
+        $messagehtml .='<table>
+        <tr><td>Ticket: </td><td>'.$_SESSION['requestid'].'</td></tr>
+        <tr><td>Peticionario: </td><td>'.$toemail.'</td></tr>
+        <tr></tr><tr></tr>
+        <tr><td>Fecha</td><td>Detalles</td></tr>';
+        $messagehtml .='<tr>';
+        $messagehtml .='<td>'.date("d/m/Y").'</td><td>'.$subject.'</td>';
+        $messagehtml .='</tr>';  
+        $messagehtml .='<tr></tr></table>
+        <hr style="color: #e60000" />
+        <p>Final de listado.</p>
+        </body>
+        </html>';
+        mail($toemail,$subject,$messagehtml);
+    }
 //End of class.
 }

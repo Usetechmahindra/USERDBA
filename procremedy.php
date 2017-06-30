@@ -61,6 +61,7 @@ and open the template in the editor.
            $rowremedy['estado'] = 3;
            $_SESSION['ESTADOTICKET'] = $rowremedy['estado'];
            $ClaseRemedy->updateremedy($rowremedy);
+           $ClaseRemedy->mailfinal($rowremedy);
        }
     }
     // Cargar lineas
