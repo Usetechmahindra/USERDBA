@@ -475,7 +475,7 @@ class remedyClass {
         <title>'.$subject.'</title>
         </head>
         <body>
-        <img src="http://vodafone.es/static/img/vf-logo.png" alt="Logo VF" style="background-color:#e60000;">
+        <p>Informe administración usuarios oracle</p>
         <hr style="color: #e60000;" />';
         // Cabecera del mensaje
         $messagehtml .='<p/>'.$subject.'<p/>';
