@@ -6,6 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <link rel="stylesheet" type="text/css" href="css/onoestilos.css">
+    <link rel="stylesheet" type="text/css" href="jquery-ui.css">
     <head>
     <?php
     // creamos la sesion y clase de admin de conexiones.
