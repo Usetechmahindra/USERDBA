@@ -466,6 +466,8 @@ class remedyClass {
     {
         $toemail=$rowremedy['peticionario'];
         $subject="Ejecución correcta según ticket Nº".$rowremedy['requestid'];
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
         // Enviar correo
         $messagehtml = '
         <html>
@@ -491,7 +493,7 @@ class remedyClass {
         <p>Final de listado.</p>
         </body>
         </html>';
-        mail($toemail,$subject,$messagehtml);
+        mail($toemail,$subject,$messagehtml,$headers);
     }
 //End of class.
 }
