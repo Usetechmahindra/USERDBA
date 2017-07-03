@@ -468,6 +468,7 @@ class remedyClass {
         $subject="Ejecución correcta según ticket Nº".$rowremedy['requestid'];
         $headers .= "MIME-Version: 1.0\r\n";
         $headers .= "Content-Type: text/html; charset=UTF8\r\n";
+        $headers .= 'From: userdba@vodafone.es \r\n';
         // Enviar correo
         $messagehtml = '
         <html>
