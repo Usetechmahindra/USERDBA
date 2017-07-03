@@ -91,13 +91,24 @@ class ConnectionClass {
     
     public function conectarOracle()
     {
-        // Realizar conexión con valores de session.
-        $cora = oci_connect($_SESSION['vuser'], $_SESSION['vpass'], $_SESSION['vconnoracle']);
-        //$cora = oci_pconnect($_SESSION['vuser'], $_SESSION['vpass'], $_SESSION['vconnoracle']);
-        if (!$cora) {
-          $e = oci_error();
-          $_SESSION['textsesion']= "Conexión fallida a oracle." . $err[text];
-          return -1;
+        $bconn = FALSE; 
+        for ($i = 1; $i <= 3; $i++) {
+            if ($bconn == FALSE)
+            {
+                // Realizar conexión con valores de session.
+                $cora = oci_connect($_SESSION['vuser'], $_SESSION['vpass'], $_SESSION['vconnoracle']);
+                if (!$cora) {
+                  $e = oci_error();
+                  if ($i>=3)
+                  {
+                    $_SESSION['textsesion']= "Conexión fallida a oracle." . $err[text];
+                    return -1;
+                  }
+                  sleep(2);
+                }else{
+                   $bconn = TRUE; 
+                }
+            }            
         }
         $_SESSION['textsesion']= "";
         $_SESSION['cora'] = $cora;

@@ -15,10 +15,11 @@ class oraClass extends ConnectionClass{
     // Connect
     function conectar()
     {
-        // Control post
+        // Control post.
         $mysqli = new mysqli($_SESSION['serverdb'],$_SESSION['dbuser'],$_SESSION['dbpass'],$_SESSION['dbname']);
         if ($mysqli->connect_errno)
         {
+
             echo $mysqli->host_info."\n";
             exit();
         }
